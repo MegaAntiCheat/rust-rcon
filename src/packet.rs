@@ -95,8 +95,7 @@ impl Packet {
             .read_to_end(&mut body_buffer)
             .await?;
 
-        let body = String::from_utf8(body_buffer)
-            .map_err(|_| io::Error::from(io::ErrorKind::InvalidData))?;
+        let body = String::from_utf8_lossy(&body_buffer).into_owned();
 
         // terminating nulls
         let mut buf = [0u8; 2];
